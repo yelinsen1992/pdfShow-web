@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>word文档盖章</title>
+  <link rel="stylesheet" href="css/msPdf.css">
+  <link rel="stylesheet" href="css/electron.css">
+</head>
+
+<body>
+  <input type="file" class="ms-upload-file">
+</body>
+<script src="js/jquery-3.4.0.min.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/pdf.worker.min.js"></script>
+<script src="js/msPdf.js"></script>
+<script>
+  $('.ms-upload-file').msPdf({
+    postUrl: 'http://api.842246173.top/api/upload/tmp', //word转pdf后端接口，返回二进制文件
+    postSuccess: function() { // pdf转换成功后
+      console.log('word转pdf请求成功');
+    },
+    imgSuccess: function() {  // 图片预览成功后
+      console.log('图片预览成功');
+    },
+    pdfSuccess: function() {  // pdf预览成功后
+      console.log('pdf预览成功');
+    },
+  });
+</script>
+</html>

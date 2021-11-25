@@ -1,0 +1,17 @@
+body{
+  min-height:100vh;
+  position:relative;
+}
+#version-info{
+  position:absolute;
+  bottom:10px;
+  left:10px;
+}
+#version-info p,#version-info p span{
+  font-size:12px;
+  line-height:110%;
+  color:#333;
+}
+#version-info p span{
+  color:#bbb;
+}
