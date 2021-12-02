@@ -131,7 +131,7 @@ li{
 	right:-110px;
 	width:100px;
 }
-.ms-fixed-right .ms-toggle-pdf,.ms-fixed-right .ms-clear-seal,.ms-fixed-right .ms-to-top{
+.ms-fixed-right .ms-toggle-pdf,.ms-fixed-right .ms-clear-seal,.ms-fixed-right .ms-to-top,.ms-fixed-right .ms-seal-clip{
 	text-align:center;
 	cursor: pointer;
 	font-size: 14px;
@@ -141,7 +141,7 @@ li{
 	display: block;
 	background:#fff;
 }
-.ms-fixed-right .ms-toggle-pdf:hover,.ms-fixed-right .ms-clear-seal:hover,.ms-fixed-right .ms-to-top:hover{
+.ms-fixed-right .ms-toggle-pdf:hover,.ms-fixed-right .ms-clear-seal:hover,.ms-fixed-right .ms-to-top:hover,.ms-fixed-right .ms-seal-clip:hover{
 	text-decoration:underline;
 	color:#333;
 }

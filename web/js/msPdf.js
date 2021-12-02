@@ -57,6 +57,7 @@ async function sleep(ms){
   };
   function creatHtml() {  // 渲染html结构
     t.el.attr('accept', t.opts.format).hide();
+    t.sealClip = 0;
     var text = '分页查看'
     var showPage = 'display:none;'
     if (t.opts.showView == 2) {
@@ -86,6 +87,7 @@ async function sleep(ms){
       '<div class="ms-fixed-right" style="display:none;">' +
       '<div class="ms-toggle-pdf">' + text + '</div>' +
       '<div class="ms-clear-seal">恢复原图</div>' +
+      '<div class="ms-seal-clip">印章:全</div>' +
       '<div class="ms-to-top">回到顶部</div>' +
       '<div class="ms-page-box" style="'+ showPage +'">' +
       '<p></p>' +
@@ -172,8 +174,7 @@ async function sleep(ms){
           var scale = t.opts.pdfWidth / 793;
           var x = t.cvX * scale - sealW / 2;
           var y = t.cvY * scale - sealW / 2;
-          cvx.globalAlpha = 0.7;
-          cvx.drawImage(image, x, y, sealW, sealW);
+          drawSeal(cvx, image, image.width, image.height, x, y, sealW)
           t.mainBox.find('.ms-seal-list').hide();
         };
         image.src = e.target.result;
@@ -274,6 +275,25 @@ async function sleep(ms){
         t.mainBox.find('.ms-fixed-right').css({ top: 0 });
       }
     });
+    t.mainBox.find('.ms-fixed-right').on('click', '.ms-seal-clip', function() {
+      switch (t.sealClip) {
+        case 0:
+          t.sealClip = 1;
+          $(this).text('印章:左半');
+          msg('开启了左半边盖章');
+          break;
+        case 1:
+          t.sealClip = 2;
+          $(this).text('印章:右半');
+          msg('开启了右半边盖章');
+          break;
+        case 2:
+          t.sealClip = 0;
+          $(this).text('印章:全');
+          msg('开启了完整盖章')
+          break;
+      };
+    });
   };
   function pageChange() { //页数改变
     t.mainBox.find('.ms-pdf-list').children().hide().eq(t.curPage - 1).show();
@@ -288,12 +308,25 @@ async function sleep(ms){
       var scale = t.opts.pdfWidth / 793;
       var x = t.cvX * scale - sealW / 2;
       var y = t.cvY * scale - sealW / 2;
-      cvx.globalAlpha = 0.7;
-      cvx.drawImage(image, x, y, sealW, sealW);
+      drawSeal(cvx, image, image.width, image.height, x, y, sealW)
       t.mainBox.find('.ms-seal-list').hide();
     };
     image.src = png;
   };
+  function drawSeal(cvx, image, imgW, imgH, x, y, w) {
+    cvx.globalAlpha = 0.7;
+    switch (t.sealClip) {
+      case 0:
+        cvx.drawImage(image, x, y, w, w);
+        break;
+      case 1:
+        cvx.drawImage(image, 0, 0, imgW/2, imgH, x, y, w/2, w);
+        break;
+      case 2:
+        cvx.drawImage(image, imgW/2, 0, imgW/2, imgH, x + w/2, y, w/2, w);
+        break;
+    }
+  }
   function updataFuc(data) { //更新文件
     if (!data) {
       t.el.val('');
@@ -481,7 +514,7 @@ async function sleep(ms){
     t.curPage = t.opts.curPage > t.pageNum ? 1 : t.opts.curPage;
     t.pageNum = t.pageNum ? t.pageNum : 1;
     el.find('p').eq(0).text('总页数 ' + t.pageNum).siblings('p').text('当前页 ' + t.curPage);
-    t.pdf ? t.mainBox.find('.ms-fixed-right').show() : t.mainBox.find('.ms-fixed-right').hide();
+    t.mainBox.find('.ms-fixed-right').show()
     if (t.opts.showView === 1) {
       t.mainBox.find('.ms-pdf-list').children().show();
       el.hide();
